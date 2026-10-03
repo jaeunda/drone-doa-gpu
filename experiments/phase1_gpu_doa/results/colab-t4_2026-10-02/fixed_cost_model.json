@@ -1,0 +1,22 @@
+{
+  "T0_ms": 0.053310419436985425,
+  "BW_H2D_GBps": 4.91729657389803,
+  "BW_D2H_GBps": 4.584683808926938,
+  "pred_crossover_A_at_F1": 369.1577830162405,
+  "pred_crossover_F_at_A1440": 1.0,
+  "R_gpu_lookups_per_us": 27200.830676653142,
+  "cpu1t_c0_ms": 0.0011474490990283403,
+  "cpu1t_R_lookups_per_us": 190.92533182935304,
+  "cpumt_c0_ms": 0.007024713636312074,
+  "cpumt_R_lookups_per_us": 196.6335714205291,
+  "calibration_points": [
+    [
+      1,
+      36
+    ],
+    [
+      16,
+      1440
+    ]
+  ]
+}

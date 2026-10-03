@@ -1,0 +1,8 @@
+hypothesis,verdict,evidence
+H1 crossover location predicted within 2x,SUPPORTED,"measured/predicted: A_at_F1 340/369 = 0.92, F_at_A1440 nan/1 = nan; (secondary) winner accuracy 95%"
+H2 scan-only speedup capped by Amdahl; cap grows with A,SUPPORTED,A=360: p=4% bound 1.04x hybrid 0.99x; A=1440: p=14% bound 1.16x hybrid 1.11x; A=7200: p=46% bound 1.86x hybrid 1.77x
+H3 full-GPU largest segment is H2D or FFT,SUPPORTED,"F=64, A=1440: H2D 1.019, FFT+IFFT 1.088, PHAT+extract 0.217, scan+argmax 0.111, D2H 0.078, host dispatch/sync 0.052 ms"
+H4 [A][P] vs [P][A] differ by < 1.2x (L1 reuse),NOT SUPPORTED,ratio 1.227x
+H5 full-GPU capacity >= 10x best CPU,SUPPORTED,"capacity {'cpu1t': 16, 'cpumt': 16, 'gpu': 1024, 'gpu_pinned': 1024, 'hybrid': 16} (best CPU = cpu1t, Colab 2 vCPU); '+' lower bounds {'cpu1t': False, 'cpumt': False, 'gpu': False, 'gpu_pinned': False, 'hybrid': False}"
+H6a drone harder than white at the same in-band SNR,SUPPORTED,"in-band SNR for <20% failures (PHAT 300-7500 Hz): drone -10.9 dB, white -12.3 dB"
+H6b band-limited PHAT fails less than full-band PHAT (drone),SUPPORTED,"drone mean failure rate: GCC (no weighting) 27.8%, PHAT full band 31.8%, PHAT 300-7500 Hz 23.0%, PHAT-beta 0.7, 300-7500 Hz 21.3%"

@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "drone-doa"
+version = "0.1.0"
+description = "GPU-parallel acoustic direction finding for drones"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = ["numpy>=2", "scipy"]
+
+[project.optional-dependencies]
+gpu = ["cupy-cuda12x"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

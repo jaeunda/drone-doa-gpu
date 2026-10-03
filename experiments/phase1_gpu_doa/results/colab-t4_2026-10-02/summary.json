@@ -1,0 +1,137 @@
+{
+  "env": {
+    "gpu_name": "Tesla T4",
+    "gpu_sm_count": 40,
+    "compute_capability": "7.5",
+    "gpu_memory_gib": 14.56,
+    "nvidia_smi": "Tesla T4, 580.82.07, 15360 MiB",
+    "gpu_state_start": "300 MHz, 405 MHz, 40, 10.44 W",
+    "cuda_runtime": 12090,
+    "cuda_driver": 13000,
+    "cpu_model": "Intel(R) Xeon(R) CPU @ 2.00GHz",
+    "cpu_logical_cores": 2,
+    "numba_threads": 2,
+    "python": "3.13.15",
+    "cupy": "14.0.1",
+    "numpy": "2.1.3",
+    "numba": "0.61.2",
+    "scipy": "1.16.3",
+    "dtype": "float32 audio / complex64 spectra on both CPU (NumPy>=2 keeps single precision) and GPU",
+    "host_memory_for_E2E": "pageable unless marked pinned",
+    "quick_mode": false,
+    "fake_gpu": false,
+    "gpu_state_before_sweep": "930 MHz, 5000 MHz, 44, 29.95 W",
+    "gpu_state_after_sweep": "1380 MHz, 5000 MHz, 48, 32.60 W"
+  },
+  "source": "DroneAudioDataset yes_drone (Parrot Bebop, indoor), 8 x 1 s clips",
+  "model": {
+    "T0_ms": 0.053310419436985425,
+    "BW_H2D_GBps": 4.91729657389803,
+    "BW_D2H_GBps": 4.584683808926938,
+    "pred_crossover_A_at_F1": 369.1577830162405,
+    "pred_crossover_F_at_A1440": 1.0,
+    "R_gpu_lookups_per_us": 27200.830676653142,
+    "cpu1t_c0_ms": 0.0011474490990283403,
+    "cpu1t_R_lookups_per_us": 190.92533182935304,
+    "cpumt_c0_ms": 0.007024713636312074,
+    "cpumt_R_lookups_per_us": 196.6335714205291,
+    "calibration_points": [
+      [
+        1,
+        36
+      ],
+      [
+        16,
+        1440
+      ]
+    ]
+  },
+  "winner_accuracy": {
+    "cpu1t": 0.95,
+    "cpumt": 1.0
+  },
+  "capacity": {
+    "cpu1t": 16,
+    "cpumt": 16,
+    "gpu": 1024,
+    "gpu_pinned": 1024,
+    "hybrid": 16
+  },
+  "capacity_lower_bound": {
+    "cpu1t": false,
+    "cpumt": false,
+    "gpu": false,
+    "gpu_pinned": false,
+    "hybrid": false
+  },
+  "gcc_rel_err": {
+    "0": 3.4723794328783697e-07,
+    "1": 1.1850020200654399e-06,
+    "2": 2.4670927700753964e-07,
+    "3": 2.8342699920358427e-07
+  },
+  "required": {
+    "real GPU run (not emulated)": true,
+    "correctness gate passed and both negative controls caught": true,
+    "static angle error <= 3 deg": true,
+    "drone trajectory median error <= 5 deg": true,
+    ">= 10 repetitions per timed condition (or flagged)": true,
+    "kernel / E2E / dispatch overhead separated": true,
+    "pipeline segments separated (CPU / H2D / kernel / D2H / host)": true
+  },
+  "hypotheses": [
+    {
+      "hypothesis": "H1 crossover location predicted within 2x",
+      "verdict": "SUPPORTED",
+      "evidence": "measured/predicted: A_at_F1 340/369 = 0.92, F_at_A1440 nan/1 = nan; (secondary) winner accuracy 95%"
+    },
+    {
+      "hypothesis": "H2 scan-only speedup capped by Amdahl; cap grows with A",
+      "verdict": "SUPPORTED",
+      "evidence": "A=360: p=4% bound 1.04x hybrid 0.99x; A=1440: p=14% bound 1.16x hybrid 1.11x; A=7200: p=46% bound 1.86x hybrid 1.77x"
+    },
+    {
+      "hypothesis": "H3 full-GPU largest segment is H2D or FFT",
+      "verdict": "SUPPORTED",
+      "evidence": "F=64, A=1440: H2D 1.019, FFT+IFFT 1.088, PHAT+extract 0.217, scan+argmax 0.111, D2H 0.078, host dispatch/sync 0.052 ms"
+    },
+    {
+      "hypothesis": "H4 [A][P] vs [P][A] differ by < 1.2x (L1 reuse)",
+      "verdict": "NOT SUPPORTED",
+      "evidence": "ratio 1.227x"
+    },
+    {
+      "hypothesis": "H5 full-GPU capacity >= 10x best CPU",
+      "verdict": "SUPPORTED",
+      "evidence": "capacity {'cpu1t': 16, 'cpumt': 16, 'gpu': 1024, 'gpu_pinned': 1024, 'hybrid': 16} (best CPU = cpu1t, Colab 2 vCPU); '+' lower bounds {'cpu1t': False, 'cpumt': False, 'gpu': False, 'gpu_pinned': False, 'hybrid': False}"
+    },
+    {
+      "hypothesis": "H6a drone harder than white at the same in-band SNR",
+      "verdict": "SUPPORTED",
+      "evidence": "in-band SNR for <20% failures (PHAT 300-7500 Hz): drone -10.9 dB, white -12.3 dB"
+    },
+    {
+      "hypothesis": "H6b band-limited PHAT fails less than full-band PHAT (drone)",
+      "verdict": "SUPPORTED",
+      "evidence": "drone mean failure rate: GCC (no weighting) 27.8%, PHAT full band 31.8%, PHAT 300-7500 Hz 23.0%, PHAT-beta 0.7, 300-7500 Hz 21.3%"
+    }
+  ],
+  "cold_start": {
+    "scan path (scan_ap compile + launch)": {
+      "first_call_ms": 380.8776419999731,
+      "second_call_ms": 0.3625440000405433
+    },
+    "GCC path (cross_phat/extract compile + cuFFT plans)": {
+      "first_call_ms": 805.7063270000526,
+      "second_call_ms": 0.7305029999997714
+    }
+  },
+  "measured_crossover": {
+    "A_at_F1": 339.582191981089,
+    "F_at_A1440": NaN
+  },
+  "predicted_crossover": {
+    "A_at_F1": 369.1577830162405,
+    "F_at_A1440": 1.0
+  }
+}

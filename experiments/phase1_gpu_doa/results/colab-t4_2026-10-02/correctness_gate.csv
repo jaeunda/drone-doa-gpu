@@ -1,0 +1,10 @@
+case,expected,PASS,max_abs_err,allclose,argmax_same,max_angle_err_deg,as_expected
+scan_ap (baseline kernel),PASS,True,2.9802322387695312e-08,True,True,0.5,True
+scan_pa ([P][A] layout),PASS,True,2.9802322387695312e-08,True,True,0.5,True
+NEG: sign-flipped delay table,FAIL,False,0.23902879655361176,False,False,180.0,True
+NEG: off-by-one interpolation kernel,FAIL,False,0.0599185973405838,False,False,3.5,True
+"scan_ap, white-noise source",PASS,True,5.960464477539063e-08,True,True,0.0,True
+"GPU GCC vs CPU GCC, mode 0 (GCC (no weighting))",PASS,True,3.4723794328783697e-07,True,True,,True
+"GPU GCC vs CPU GCC, mode 1 (PHAT full band)",PASS,True,1.1850020200654399e-06,True,True,,True
+"GPU GCC vs CPU GCC, mode 2 (PHAT 300-7500 Hz) -> full GPU scan",PASS,True,2.4670927700753964e-07,True,True,0.5,True
+"GPU GCC vs CPU GCC, mode 3 (PHAT-beta 0.7, 300-7500 Hz)",PASS,True,2.8342699920358427e-07,True,True,,True

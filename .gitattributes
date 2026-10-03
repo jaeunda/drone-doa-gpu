@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.png binary
+*.pdf binary
+# Notebooks are generated from the percent-format .py sources
+experiments/**/*.ipynb linguist-generated=true

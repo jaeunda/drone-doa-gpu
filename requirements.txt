@@ -1,0 +1,8 @@
+# Notebook dependencies. On Colab, CuPy is installed by the notebook (cupy-cuda12x) if missing.
+# Local dry runs (tools/run_notebook.py) use tools/fakecupy instead of CuPy and also need g++.
+numpy>=2
+numba
+scipy
+pandas
+matplotlib
+requests
